@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First GeoServer Map</title>
+    <link rel="stylesheet" href="./ol.css">
+    <style>
+      /* Make the map fill the whole browser window */
+      body { margin: 0; }
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script src="./ol.js"></script>
+
+    <script>
+      // Layer 1: The standard OpenStreetMap background
+      const osmLayer = new ol.layer.Tile({
+        source: new ol.source.OSM()
+      });
+
+      // Layer 2: Your populated places layer from GeoServer
+      const populatedPlacesLayer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: 'http://localhost:8080/geoserver/my_project/wms',
+          params: {
+            'LAYERS': 'my_project:ne_50m_populated_places', // Make sure this name is correct!
+            'TILED': true
+          },
+          serverType: 'geoserver',
+        })
+      });
+
+      // The final map object
+      const map = new ol.Map({
+        target: 'map',
+        layers: [
+          osmLayer, // The background map goes first (on the bottom)
+          populatedPlacesLayer // Your data goes on top
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([78.9629, 20.5937]), // Center the map at India's coordinates (EPSG:4326 to EPSG:3857)
+          zoom: 5
+        })
+      });
+    </script>
+  </body>
+</html>

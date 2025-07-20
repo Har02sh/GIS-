@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Movement Tracker</title>
+    <!-- OpenLayers CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v9.2.4/ol.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Controls for selecting group and date range -->
+        <div class="controls">
+            <div class="control-group">
+                <label for="group-select">Select Group:</label>
+                <select id="group-select">
+                    <option value="">--Please choose a group--</option>
+                    {% for group in groups %}
+                        <option value="{{ group.id }}">{{ group.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="start-date">From:</label>
+                <input type="date" id="start-date">
+            </div>
+            <div class="control-group">
+                <label for="end-date">To:</label>
+                <input type="date" id="end-date">
+            </div>
+            <button id="show-path-btn">Show Path</button>
+        </div>
+
+        <!-- Map and Timeline containers -->
+        <div class="map-container">
+            <div id="map"></div>
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+        </div>
+        <div id="timeline-container">
+            <h2>Timeline</h2>
+            <ul id="timeline"></ul>
+        </div>
+    </div>
+
+    <!-- OpenLayers JS -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v9.2.4/dist/ol.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+</body>
+</html>
